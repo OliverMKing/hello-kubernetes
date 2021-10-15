@@ -25,7 +25,7 @@ jobs:
         run: |
           echo "IMAGE=$CONTAINER_REGISTRY/$CONTAINER_IMAGE" >> $GITHUB_ENV
           echo "IMAGE_VERSION=$(cat src/app/package.json | jq -r .version)" >> $GITHUB_ENV
-          
+
       - name: Build additional image tag variables
         run: |
           echo "IMAGE_MAJOR_VERSION=$(echo $IMAGE_VERSION | cut -d '.' -f1)" >> $GITHUB_ENV
@@ -38,6 +38,16 @@ jobs:
             --build-arg IMAGE_CREATE_DATE="`date -u +"%Y-%m-%dT%H:%M:%SZ"`" \
             --build-arg IMAGE_SOURCE_REVISION="`git rev-parse HEAD`" \
             --file src/app/Dockerfile src/app
+
+      - uses: gambtho/aks_devcluster_action
+        with:
+        ARM_TENANT_ID: 'asfd'
+        RESOURCE_GROUP_NAME: 'cdasfd'
+        CLUSTER_NAME: 'fdas'
+        ACTION_TYPE: 'dfsa'
+        ARM_CLIENT_ID: 'fdasf'
+        ARM_CLIENT_SECRET: 'fasf'
+        ARM_SUBSCRIPTION_ID: 'fdas'
 
       - name: Create additional image tags
         run: |
@@ -52,4 +62,3 @@ jobs:
           docker push $IMAGE:$IMAGE_VERSION
           docker push $IMAGE:$IMAGE_MAJOR_VERSION
           docker push $IMAGE:$IMAGE_MAJOR_VERSION.$IMAGE_MINOR_VERSION
-
