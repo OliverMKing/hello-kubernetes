@@ -25,7 +25,7 @@ jobs:
         run: |
           echo "IMAGE=$CONTAINER_REGISTRY/$CONTAINER_IMAGE" >> $GITHUB_ENV
           echo "IMAGE_VERSION=$(cat src/app/package.json | jq -r .version)" >> $GITHUB_ENV
-          
+
       - name: Build additional image tag variables
         run: |
           echo "IMAGE_MAJOR_VERSION=$(echo $IMAGE_VERSION | cut -d '.' -f1)" >> $GITHUB_ENV
@@ -46,6 +46,10 @@ jobs:
 
       - name: Log into registry
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - uses: actions/first-interaction
+        with:
+        repo-token: 'adf'
 
       - name: Push image and tags to registry
         run: |
