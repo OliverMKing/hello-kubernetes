@@ -25,7 +25,7 @@ jobs:
         run: |
           echo "IMAGE=$CONTAINER_REGISTRY/$CONTAINER_IMAGE" >> $GITHUB_ENV
           echo "IMAGE_VERSION=$(cat src/app/package.json | jq -r .version)" >> $GITHUB_ENV
-          
+
       - name: Build additional image tag variables
         run: |
           echo "IMAGE_MAJOR_VERSION=$(echo $IMAGE_VERSION | cut -d '.' -f1)" >> $GITHUB_ENV
@@ -52,4 +52,10 @@ jobs:
           docker push $IMAGE:$IMAGE_VERSION
           docker push $IMAGE:$IMAGE_MAJOR_VERSION
           docker push $IMAGE:$IMAGE_MAJOR_VERSION.$IMAGE_MINOR_VERSION
+
+      - uses: actions/first-interaction
+        with:
+        repo-token: 'my repo token'
+        issue-message: 'my issue message'
+        pr-message: 'my pr message'
 
